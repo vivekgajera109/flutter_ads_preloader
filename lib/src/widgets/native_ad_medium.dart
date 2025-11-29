@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class NativeAdMediumWidget extends StatefulWidget {
   final String adUnitId;
+
   const NativeAdMediumWidget({super.key, required this.adUnitId});
 
   @override
@@ -16,13 +17,18 @@ class _NativeAdMediumWidgetState extends State<NativeAdMediumWidget> {
   @override
   void initState() {
     super.initState();
-    _load();
+    _loadAd();
   }
 
-  void _load() {
+  void _loadAd() {
+    _nativeAd?.dispose();
+
     _nativeAd = NativeAd(
       adUnitId: widget.adUnitId,
       request: const AdRequest(),
+      nativeTemplateStyle: NativeTemplateStyle(
+        templateType: TemplateType.medium,
+      ),
       listener: NativeAdListener(
         onAdLoaded: (_) => setState(() => _loaded = true),
         onAdFailedToLoad: (ad, error) {
@@ -41,7 +47,7 @@ class _NativeAdMediumWidgetState extends State<NativeAdMediumWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_loaded) return const SizedBox.shrink();
+    if (!_loaded) return SizedBox.shrink();
 
     return SizedBox(height: 250, child: AdWidget(ad: _nativeAd!));
   }
