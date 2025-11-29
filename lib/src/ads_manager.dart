@@ -66,25 +66,6 @@ class AdsManager {
     loadNativeMedium();
   }
 
-  // ✅ Banner
-  void loadBanner({AdSize size = AdSize.banner}) {
-    bannerAd?.dispose();
-    bannerAd = BannerAd(
-      adUnitId: bannerId,
-      size: size,
-      request: const AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          isBannerLoaded = true;
-        },
-        onAdFailedToLoad: (ad, error) {
-          isBannerLoaded = false;
-              print("------>>> Error --> $error");
-        },
-      ),
-    )..load();
-  }
-
   // ✅ Interstitial with close callback
   void loadInterstitial() {
     InterstitialAd.load(
@@ -251,41 +232,69 @@ class AdsManager {
 
     appOpenAd!.show();
   }
+  ///////////////////
 
-  // Small Native
+  // ------------------ BANNER ------------------
+
+  void loadBanner() {
+    bannerAd?.dispose();
+
+    bannerAd = BannerAd(
+      adUnitId: bannerId,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) => isBannerLoaded = true,
+        onAdFailedToLoad: (ad, error) {
+          isBannerLoaded = false;
+          ad.dispose();
+          print("Banner error: $error");
+        },
+      ),
+    )..load();
+  }
+
+  // ------------------ NATIVE SMALL ------------------
+
   void loadNativeSmall() {
     nativeSmall?.dispose();
+
     nativeSmall = NativeAd(
       adUnitId: nativeSmallId,
-      factoryId: "small",
+      factoryId: 'small',
       request: const AdRequest(),
       listener: NativeAdListener(
         onAdLoaded: (_) => isNativeSmallLoaded = true,
         onAdFailedToLoad: (ad, error) {
-              print("------>>> Error --> $error");
-          return isNativeSmallLoaded = false;
+          isNativeSmallLoaded = false;
+          ad.dispose();
+          print("Native small error: $error");
         },
       ),
     )..load();
   }
 
-  // Medium Native
+  // ------------------ NATIVE MEDIUM ------------------
+
   void loadNativeMedium() {
     nativeMedium?.dispose();
+
     nativeMedium = NativeAd(
       adUnitId: nativeMediumId,
-      factoryId: "medium",
+      factoryId: 'medium',
       request: const AdRequest(),
       listener: NativeAdListener(
         onAdLoaded: (_) => isNativeMediumLoaded = true,
-        onAdFailedToLoad: (_, error) {
-              print("------>>> Error --> $error");
-          return isNativeMediumLoaded = false;
+        onAdFailedToLoad: (ad, error) {
+          isNativeMediumLoaded = false;
+          ad.dispose();
+          print("Native medium error: $error");
         },
       ),
     )..load();
   }
 
+  //////////////////
   // ✅ Clean Memory
   void disposeAll() {
     bannerAd?.dispose();

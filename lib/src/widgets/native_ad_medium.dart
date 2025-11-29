@@ -3,7 +3,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class NativeAdMediumWidget extends StatefulWidget {
   final String adUnitId;
-
   const NativeAdMediumWidget({super.key, required this.adUnitId});
 
   @override
@@ -12,29 +11,23 @@ class NativeAdMediumWidget extends StatefulWidget {
 
 class _NativeAdMediumWidgetState extends State<NativeAdMediumWidget> {
   NativeAd? _nativeAd;
-  bool _isLoaded = false;
+  bool _loaded = false;
 
   @override
   void initState() {
     super.initState();
-    _loadAd();
+    _load();
   }
 
-  void _loadAd() {
-    _nativeAd?.dispose();
-
+  void _load() {
     _nativeAd = NativeAd(
       adUnitId: widget.adUnitId,
-      factoryId: "medium",
       request: const AdRequest(),
       listener: NativeAdListener(
-        onAdLoaded: (ad) {
-          setState(() => _isLoaded = true);
-        },
+        onAdLoaded: (_) => setState(() => _loaded = true),
         onAdFailedToLoad: (ad, error) {
-              print("------>>> Error --> $error");
           ad.dispose();
-          setState(() => _isLoaded = false);
+          setState(() => _loaded = false);
         },
       ),
     )..load();
@@ -48,8 +41,8 @@ class _NativeAdMediumWidgetState extends State<NativeAdMediumWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isLoaded) return const SizedBox.shrink();
+    if (!_loaded) return const SizedBox.shrink();
 
-    return SizedBox(height: 200, child: AdWidget(ad: _nativeAd!));
+    return SizedBox(height: 250, child: AdWidget(ad: _nativeAd!));
   }
 }

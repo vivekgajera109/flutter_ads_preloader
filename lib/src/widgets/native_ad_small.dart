@@ -25,16 +25,12 @@ class _NativeAdSmallWidgetState extends State<NativeAdSmallWidget> {
 
     _nativeAd = NativeAd(
       adUnitId: widget.adUnitId,
-      factoryId: "small",
       request: const AdRequest(),
       listener: NativeAdListener(
         onAdLoaded: (ad) {
-          setState(() {
-            _isLoaded = true;
-          });
+          setState(() => _isLoaded = true);
         },
         onAdFailedToLoad: (ad, error) {
-          print("------>>> Error --> $error");
           ad.dispose();
           setState(() => _isLoaded = false);
         },
