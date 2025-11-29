@@ -79,6 +79,7 @@ class AdsManager {
         },
         onAdFailedToLoad: (ad, error) {
           isBannerLoaded = false;
+          print(error);
         },
       ),
     )..load();
@@ -94,7 +95,10 @@ class AdsManager {
           interstitialAd = ad;
           isInterstitialLoaded = true;
         },
-        onAdFailedToLoad: (_) => isInterstitialLoaded = false,
+        onAdFailedToLoad: (e) {
+          isInterstitialLoaded = false;
+          print(e);
+        },
       ),
     );
   }
@@ -133,7 +137,10 @@ class AdsManager {
           rewardedAd = ad;
           isRewardedLoaded = true;
         },
-        onAdFailedToLoad: (_) => isRewardedLoaded = false,
+        onAdFailedToLoad: (e) {
+          isRewardedLoaded = false;
+          print(e);
+        },
       ),
     );
   }
@@ -171,7 +178,10 @@ class AdsManager {
           rewardedInterstitialAd = ad;
           isRewardedInterstitialLoaded = true;
         },
-        onAdFailedToLoad: (_) => isRewardedInterstitialLoaded = false,
+        onAdFailedToLoad: (e) {
+          print(e);
+          isRewardedInterstitialLoaded = false;
+        },
       ),
     );
   }
@@ -187,13 +197,13 @@ class AdsManager {
 
     rewardedInterstitialAd!.fullScreenContentCallback =
         FullScreenContentCallback(
-      onAdDismissedFullScreenContent: (ad) {
-        ad.dispose();
-        isRewardedInterstitialLoaded = false;
-        loadRewardedInterstitial();
-        onClosed();
-      },
-    );
+          onAdDismissedFullScreenContent: (ad) {
+            ad.dispose();
+            isRewardedInterstitialLoaded = false;
+            loadRewardedInterstitial();
+            onClosed();
+          },
+        );
 
     rewardedInterstitialAd!.show(
       onUserEarnedReward: (_, reward) => onReward(reward.amount.toInt()),
@@ -210,7 +220,10 @@ class AdsManager {
           appOpenAd = ad;
           isAppOpenLoaded = true;
         },
-        onAdFailedToLoad: (_) => isAppOpenLoaded = false,
+        onAdFailedToLoad: (e) {
+          print(e);
+          isAppOpenLoaded = false;
+        },
       ),
     );
   }
@@ -248,7 +261,10 @@ class AdsManager {
       request: const AdRequest(),
       listener: NativeAdListener(
         onAdLoaded: (_) => isNativeSmallLoaded = true,
-        onAdFailedToLoad: (_, __) => isNativeSmallLoaded = false,
+        onAdFailedToLoad: (ad, error) {
+          print(error);
+          return isNativeSmallLoaded = false;
+        },
       ),
     )..load();
   }
@@ -262,7 +278,10 @@ class AdsManager {
       request: const AdRequest(),
       listener: NativeAdListener(
         onAdLoaded: (_) => isNativeMediumLoaded = true,
-        onAdFailedToLoad: (_, __) => isNativeMediumLoaded = false,
+        onAdFailedToLoad: (_, error) {
+          print(error);
+          return isNativeMediumLoaded = false;
+        },
       ),
     )..load();
   }

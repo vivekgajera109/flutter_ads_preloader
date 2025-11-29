@@ -31,6 +31,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
           setState(() => _isLoaded = true);
         },
         onAdFailedToLoad: (ad, error) {
+          print(error);
           setState(() => _isLoaded = false);
           ad.dispose();
         },
@@ -50,7 +51,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     if (_banner == null || !_isLoaded) {
       return const SizedBox.shrink();
     }
-    
+
     return Container(
       height: _banner!.size.height.toDouble(),
       width: widget.width ?? _banner!.size.width.toDouble(),

@@ -32,6 +32,7 @@ class _NativeAdMediumWidgetState extends State<NativeAdMediumWidget> {
           setState(() => _isLoaded = true);
         },
         onAdFailedToLoad: (ad, error) {
+          print(error);
           ad.dispose();
           setState(() => _isLoaded = false);
         },
@@ -49,9 +50,6 @@ class _NativeAdMediumWidgetState extends State<NativeAdMediumWidget> {
   Widget build(BuildContext context) {
     if (!_isLoaded) return const SizedBox.shrink();
 
-    return SizedBox(
-      height: 200,
-      child: AdWidget(ad: _nativeAd!),
-    );
+    return SizedBox(height: 200, child: AdWidget(ad: _nativeAd!));
   }
 }
