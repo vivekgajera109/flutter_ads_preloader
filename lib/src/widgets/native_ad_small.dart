@@ -34,7 +34,7 @@ class _NativeAdSmallWidgetState extends State<NativeAdSmallWidget> {
           });
         },
         onAdFailedToLoad: (ad, error) {
-          print(error);
+          print("------>>> Error --> $error");
           ad.dispose();
           setState(() => _isLoaded = false);
         },

@@ -31,7 +31,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
           setState(() => _isLoaded = true);
         },
         onAdFailedToLoad: (ad, error) {
-          print(error);
+              print("------>>> Error --> $error");
           setState(() => _isLoaded = false);
           ad.dispose();
         },

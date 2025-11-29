@@ -79,7 +79,7 @@ class AdsManager {
         },
         onAdFailedToLoad: (ad, error) {
           isBannerLoaded = false;
-          print(error);
+              print("------>>> Error --> $error");
         },
       ),
     )..load();
@@ -262,7 +262,7 @@ class AdsManager {
       listener: NativeAdListener(
         onAdLoaded: (_) => isNativeSmallLoaded = true,
         onAdFailedToLoad: (ad, error) {
-          print(error);
+              print("------>>> Error --> $error");
           return isNativeSmallLoaded = false;
         },
       ),
@@ -279,7 +279,7 @@ class AdsManager {
       listener: NativeAdListener(
         onAdLoaded: (_) => isNativeMediumLoaded = true,
         onAdFailedToLoad: (_, error) {
-          print(error);
+              print("------>>> Error --> $error");
           return isNativeMediumLoaded = false;
         },
       ),

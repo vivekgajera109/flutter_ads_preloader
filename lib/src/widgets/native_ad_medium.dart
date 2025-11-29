@@ -32,7 +32,7 @@ class _NativeAdMediumWidgetState extends State<NativeAdMediumWidget> {
           setState(() => _isLoaded = true);
         },
         onAdFailedToLoad: (ad, error) {
-          print(error);
+              print("------>>> Error --> $error");
           ad.dispose();
           setState(() => _isLoaded = false);
         },
