@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class AppOpenManager with WidgetsBindingObserver {
+class AppOpenManager {
   static final AppOpenManager _instance = AppOpenManager._internal();
   factory AppOpenManager() => _instance;
+
   AppOpenManager._internal();
 
   AppOpenAd? _appOpenAd;
-  bool _isShowingAd = false;
   bool _isLoading = false;
+  bool _isShowingAd = false;
 
-  String adUnitId = ""; // Set dynamically
+  late String adUnitId;
 
-  void initialize(String appOpenId) {
-    adUnitId = appOpenId;
-    WidgetsBinding.instance.addObserver(this);
+  // Initialize with remote config Ad ID
+  void initialize(String id) {
+    adUnitId = id;
     _loadAd();
   }
 
-  // Load App Open Ad
   void _loadAd() {
-    if (_isLoading || adUnitId.isEmpty) return;
+    if (_isLoading) return;
 
     _isLoading = true;
 
@@ -32,42 +32,46 @@ class AppOpenManager with WidgetsBindingObserver {
           _appOpenAd = ad;
           _isLoading = false;
         },
-        onAdFailedToLoad: (e) {
+        onAdFailedToLoad: (error) {
           _isLoading = false;
-          print("AppOpenAd Failed: $e");
+          // Retry after failure
+          Future.delayed(const Duration(seconds: 5), _loadAd);
         },
       ),
     );
   }
 
-  /// Show when available
-  void showAdIfAvailable() {
-    if (_appOpenAd == null || _isShowingAd) return;
+  void showAdIfAvailable(VoidCallback onComplete) {
+    if (_isShowingAd) {
+      onComplete();
+      return;
+    }
+
+    if (_appOpenAd == null) {
+      onComplete();
+      _loadAd();
+      return;
+    }
+
+    _isShowingAd = true;
 
     _appOpenAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (ad) {
         _isShowingAd = false;
         ad.dispose();
         _appOpenAd = null;
-        _loadAd(); // Preload again
+        _loadAd();
+        onComplete();
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
         _isShowingAd = false;
         ad.dispose();
         _appOpenAd = null;
         _loadAd();
+        onComplete();
       },
     );
 
-    _isShowingAd = true;
     _appOpenAd!.show();
-  }
-
-  /// Called when app resumed
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      showAdIfAvailable();
-    }
   }
 }
