@@ -95,7 +95,20 @@ class AdsProvider extends ChangeNotifier {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => const Center(child: CircularProgressIndicator()),
+
+      builder: (_) => Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            Text("Ad is Loading..."),
+
+            const Center(child: CircularProgressIndicator()),
+          ],
+        ),
+      ),
     );
 
     // Load ad (safe wrapper)
@@ -111,11 +124,11 @@ class AdsProvider extends ChangeNotifier {
 
   Future<void> loadInterstitialSafe() async {
     _manager.loadInterstitial(); // void method
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(Duration(milliseconds: 400));
   }
 
   Future<void> showInterstitialSafe() async {
     _manager.showInterstitial(); // void method
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(Duration(milliseconds: 400));
   }
 }
