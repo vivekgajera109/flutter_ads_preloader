@@ -120,11 +120,11 @@ class AdsProvider extends ChangeNotifier {
 
   Future<void> loadInterstitialSafe() async {
     _manager.loadInterstitial(); // void method
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 100));
   }
 
   Future<void> showInterstitialSafe() async {
     _manager.showInterstitial(); // void method
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(Duration(milliseconds: 200));
   }
 }
