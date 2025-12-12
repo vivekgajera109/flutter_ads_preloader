@@ -88,38 +88,38 @@ class AdsProvider extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> showInterstitialWithLoading(BuildContext context) async {
-    if (!isShow) return;
+  Future<bool> showInterstitialWithLoading(BuildContext context) async {
+    if (!isShow) return true;
+
+    bool shouldContinue = false;
 
     // Show loading dialog
     showDialog(
       context: context,
       barrierDismissible: false,
-
-      builder: (_) => Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          children: [
-            Text("Ad is Loading..."),
-
-            const Center(child: CircularProgressIndicator()),
-          ],
-        ),
-      ),
+      builder: (_) => const Center(child: CircularProgressIndicator()),
     );
 
-    // Load ad (safe wrapper)
-    await loadInterstitialSafe();
+    // Load Ad
+    _manager.loadInterstitial();
 
-    // Show Ad
-    await showInterstitialSafe();
+    // Wait for ad to load max 3 sec
+    await Future.delayed(const Duration(seconds: 3));
 
-    // Close dialog
-    // ignore: use_build_context_synchronously
-    Navigator.of(context, rootNavigator: true).pop();
+    // SHOW Ad With "onClosed"
+    _manager.showInterstitial(
+      onClosed: () {
+        shouldContinue = true;
+        Navigator.of(context, rootNavigator: true).pop(); // CLOSE dialog
+      },
+    );
+
+    // Wait until user closes ad
+    while (!shouldContinue) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+
+    return shouldContinue;
   }
 
   Future<void> loadInterstitialSafe() async {
