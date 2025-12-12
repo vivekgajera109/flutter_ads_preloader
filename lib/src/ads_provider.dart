@@ -70,10 +70,7 @@ class AdsProvider extends ChangeNotifier {
       onClosed();
       return;
     }
-    _manager.showRewardedInterstitial(
-      onReward: onReward,
-      onClosed: onClosed,
-    );
+    _manager.showRewardedInterstitial(onReward: onReward, onClosed: onClosed);
   }
 
   // ✅ App Open
@@ -89,5 +86,36 @@ class AdsProvider extends ChangeNotifier {
   void dispose() {
     _manager.disposeAll();
     super.dispose();
+  }
+
+  Future<void> showInterstitialWithLoading(BuildContext context) async {
+    if (!isShow) return;
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+
+    // Load ad (safe wrapper)
+    await loadInterstitialSafe();
+
+    // Show Ad
+    await showInterstitialSafe();
+
+    // Close dialog
+    // ignore: use_build_context_synchronously
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  Future<void> loadInterstitialSafe() async {
+    _manager.loadInterstitial(); // void method
+    await Future.delayed(Duration(milliseconds: 300));
+  }
+
+  Future<void> showInterstitialSafe() async {
+    _manager.showInterstitial(); // void method
+    await Future.delayed(Duration(milliseconds: 300));
   }
 }

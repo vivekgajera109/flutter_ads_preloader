@@ -84,7 +84,7 @@ class AdsManager {
     );
   }
 
-  void showInterstitial({required VoidCallback? onClosed}) {
+  void showInterstitial({VoidCallback? onClosed}) {
     if (!isInterstitialLoaded || interstitialAd == null) {
       onClosed?.call(); // continue flow without ad
       return;
