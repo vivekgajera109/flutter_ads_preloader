@@ -107,17 +107,13 @@ class AdsProvider extends ChangeNotifier {
     await Future.delayed(const Duration(seconds: 3));
 
     // SHOW Ad With "onClosed"
-    _manager.showInterstitial(
-      onClosed: () {
-        shouldContinue = true;
-        Navigator.of(context, rootNavigator: true).pop(); // CLOSE dialog
-      },
-    );
-
+    _manager.showInterstitial();
+    shouldContinue = true;
+    Navigator.of(context, rootNavigator: true).pop(); // CLOSE dialog
     // Wait until user closes ad
-    while (!shouldContinue) {
-      await Future.delayed(const Duration(milliseconds: 100));
-    }
+    // while (!shouldContinue) {
+    //   await Future.delayed(const Duration(milliseconds: 100));
+    // }
 
     return shouldContinue;
   }
