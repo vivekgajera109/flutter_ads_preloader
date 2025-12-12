@@ -49,6 +49,6 @@ class _NativeAdMediumWidgetState extends State<NativeAdMediumWidget> {
   Widget build(BuildContext context) {
     if (!_loaded) return SizedBox.shrink();
 
-    return SizedBox(height: 300, child: AdWidget(ad: _nativeAd!));
+    return SizedBox(height: 320, child: AdWidget(ad: _nativeAd!));
   }
 }
