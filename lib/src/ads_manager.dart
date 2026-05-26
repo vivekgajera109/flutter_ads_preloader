@@ -6,6 +6,7 @@ class AdsManager {
   static final AdsManager instance = AdsManager._();
 
   bool _initialized = false;
+  VoidCallback? onAdLoadedCallback;
 
   // IDs
   late String bannerId;
@@ -75,10 +76,12 @@ class AdsManager {
         onAdLoaded: (ad) {
           interstitialAd = ad;
           isInterstitialLoaded = true;
+          onAdLoadedCallback?.call();
         },
         onAdFailedToLoad: (e) {
           isInterstitialLoaded = false;
           print(e);
+          onAdLoadedCallback?.call();
         },
       ),
     );
@@ -117,10 +120,12 @@ class AdsManager {
         onAdLoaded: (ad) {
           rewardedAd = ad;
           isRewardedLoaded = true;
+          onAdLoadedCallback?.call();
         },
         onAdFailedToLoad: (e) {
           isRewardedLoaded = false;
           print(e);
+          onAdLoadedCallback?.call();
         },
       ),
     );
@@ -158,10 +163,12 @@ class AdsManager {
         onAdLoaded: (ad) {
           rewardedInterstitialAd = ad;
           isRewardedInterstitialLoaded = true;
+          onAdLoadedCallback?.call();
         },
         onAdFailedToLoad: (e) {
           print(e);
           isRewardedInterstitialLoaded = false;
+          onAdLoadedCallback?.call();
         },
       ),
     );
@@ -200,10 +207,12 @@ class AdsManager {
         onAdLoaded: (ad) {
           appOpenAd = ad;
           isAppOpenLoaded = true;
+          onAdLoadedCallback?.call();
         },
         onAdFailedToLoad: (e) {
           print(e);
           isAppOpenLoaded = false;
+          onAdLoadedCallback?.call();
         },
       ),
     );
@@ -244,11 +253,15 @@ class AdsManager {
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
-        onAdLoaded: (_) => isBannerLoaded = true,
+        onAdLoaded: (_) {
+          isBannerLoaded = true;
+          onAdLoadedCallback?.call();
+        },
         onAdFailedToLoad: (ad, error) {
           isBannerLoaded = false;
           ad.dispose();
           print("Banner error: $error");
+          onAdLoadedCallback?.call();
         },
       ),
     )..load();
@@ -264,11 +277,15 @@ class AdsManager {
       factoryId: 'small',
       request: const AdRequest(),
       listener: NativeAdListener(
-        onAdLoaded: (_) => isNativeSmallLoaded = true,
+        onAdLoaded: (_) {
+          isNativeSmallLoaded = true;
+          onAdLoadedCallback?.call();
+        },
         onAdFailedToLoad: (ad, error) {
           isNativeSmallLoaded = false;
           ad.dispose();
           print("Native small error: $error");
+          onAdLoadedCallback?.call();
         },
       ),
     )..load();
@@ -284,11 +301,15 @@ class AdsManager {
       factoryId: 'medium',
       request: const AdRequest(),
       listener: NativeAdListener(
-        onAdLoaded: (_) => isNativeMediumLoaded = true,
+        onAdLoaded: (_) {
+          isNativeMediumLoaded = true;
+          onAdLoadedCallback?.call();
+        },
         onAdFailedToLoad: (ad, error) {
           isNativeMediumLoaded = false;
           ad.dispose();
           print("Native medium error: $error");
+          onAdLoadedCallback?.call();
         },
       ),
     )..load();

@@ -8,6 +8,9 @@ export 'src/widgets/banner_ad_widget.dart';
 export 'src/widgets/native_ad_small.dart';
 export 'src/widgets/native_ad_medium.dart';
 export 'src/widgets/native_placeholder.dart';
+export 'src/widgets/preloaded_banner_ad_widget.dart';
+export 'src/widgets/preloaded_native_ad_small.dart';
+export 'src/widgets/preloaded_native_ad_medium.dart';
 
 class FlutterAdsPreloader {
   /// MUST BE CALLED IN main()

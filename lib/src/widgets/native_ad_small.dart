@@ -26,9 +26,7 @@ class _NativeAdSmallWidgetState extends State<NativeAdSmallWidget> {
     _nativeAd = NativeAd(
       adUnitId: widget.adUnitId,
       request: const AdRequest(),
-      nativeTemplateStyle: NativeTemplateStyle(
-        templateType: TemplateType.small,
-      ),
+      factoryId: 'small',
       listener: NativeAdListener(
         onAdLoaded: (ad) {
           setState(() => _isLoaded = true);

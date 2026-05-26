@@ -13,14 +13,15 @@ class AdsProvider extends ChangeNotifier {
     isShow = config["isShow"] ?? true;
 
     _manager = AdsManager.instance
+      ..onAdLoadedCallback = notifyListeners
       ..setAdIds(
         bannerId: config["bannerId"] ?? "",
         interstitialId: config["interstitialId"] ?? "",
         rewardedId: config["rewardedId"] ?? "",
         rewardedInterstitialId: config["rewardedInterstitialId"] ?? "",
         appOpenId: config["appOpenId"] ?? "",
-        nativeSmallId: config["nativeId"],
-        nativeMediumId: config["nativeId"],
+        nativeSmallId: config["nativeId"] ?? "",
+        nativeMediumId: config["nativeId"] ?? "",
       );
 
     if (isShow) {
@@ -32,13 +33,15 @@ class AdsProvider extends ChangeNotifier {
 
   // ✅ Banner
   bool get isBannerLoaded => isShow && _manager.isBannerLoaded;
-  BannerAd? get bannerAd => isShow ? _manager.bannerAd : null;
+  BannerAd? get bannerAd => isShow && _manager.isBannerLoaded ? _manager.bannerAd : null;
 
   // Small Native
-  NativeAd? get nativeSmall => isShow ? _manager.nativeSmall : null;
+  bool get isNativeSmallLoaded => isShow && _manager.isNativeSmallLoaded;
+  NativeAd? get nativeSmall => isShow && _manager.isNativeSmallLoaded ? _manager.nativeSmall : null;
 
   // Medium Native
-  NativeAd? get nativeMedium => isShow ? _manager.nativeMedium : null;
+  bool get isNativeMediumLoaded => isShow && _manager.isNativeMediumLoaded;
+  NativeAd? get nativeMedium => isShow && _manager.isNativeMediumLoaded ? _manager.nativeMedium : null;
 
   // ✅ Interstitial
   void showInterstitial({VoidCallback? onClosed}) {

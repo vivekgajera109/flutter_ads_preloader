@@ -26,9 +26,7 @@ class _NativeAdMediumWidgetState extends State<NativeAdMediumWidget> {
     _nativeAd = NativeAd(
       adUnitId: widget.adUnitId,
       request: const AdRequest(),
-      nativeTemplateStyle: NativeTemplateStyle(
-        templateType: TemplateType.medium,
-      ),
+      factoryId: 'medium',
       listener: NativeAdListener(
         onAdLoaded: (_) => setState(() => _loaded = true),
         onAdFailedToLoad: (ad, error) {
