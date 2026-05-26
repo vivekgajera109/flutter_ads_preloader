@@ -3,8 +3,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class NativeAdSmallWidget extends StatefulWidget {
   final String adUnitId;
+  final double height;
 
-  const NativeAdSmallWidget({super.key, required this.adUnitId});
+  const NativeAdSmallWidget({super.key, required this.adUnitId, required this.height  });
 
   @override
   State<NativeAdSmallWidget> createState() => _NativeAdSmallWidgetState();
@@ -49,6 +50,6 @@ class _NativeAdSmallWidgetState extends State<NativeAdSmallWidget> {
   Widget build(BuildContext context) {
     if (!_isLoaded) return const SizedBox.shrink();
 
-    return SizedBox(height: 130, child: AdWidget(ad: _nativeAd!));
+    return SizedBox(height: widget.height, child: AdWidget(ad: _nativeAd!));
   }
 }
